@@ -31,10 +31,18 @@ for(let row = 0; row < map.length; row++) {
     for(let i = 0; i < rowStr.length; i++) {
         let cellClass = rowStr[i];
         const cellDiv = document.createElement("div");
-
+        if(cellClass === "S") {
+            cellDiv.textContent = "S"
+            avatarRow = row
+            avatarCol = i
+        }
+        if(cellClass === "F") {
+            cellDiv.textContent = "F"
+        }
         cellDiv.className = "cell " + cellClass;
 
         rowDiv.appendChild(cellDiv);
+        
     }
 
     mazeDiv.appendChild(rowDiv);
@@ -63,17 +71,20 @@ function move(dRow, dCol) {
 
     // Using avatarRow and dRow, compute destRow (where the player should move
     // vertically). You'll need to replace "undefined" to do so.
-    const destRow = undefined; 
+    const destRow = dRow + avatarRow; 
     // Using avatarCOl and dCol, compute destCol (where the player should move
     // vertically). You'll need to replace "undefined" to do so.
-    const destCol = undefined;
+    const destCol = dCol + avatarCol;
     const destCell = map[destRow][destCol];
 
     // Check that it is within the bounds of the map, and not a wall.
     if(destCell && destCell !== "W") {
+        console.log("moving to valid cell")
         // Now that you know the player's destination, you need to actually
         // update "avatarRow" and "avatarCol". Add statements to update those
         // two variables below, before "redrawAvatar()".
+        avatarRow = destRow
+        avatarCol = destCol
         redrawAvatar();
     }
 
@@ -98,6 +109,18 @@ document.addEventListener('keydown', (event) => {
 
     // Write some logic to check the value of "event.key" and call "move()"
     // with the proper arguments.
+    if(event.key === "ArrowUp") {
+        move(-1, 0)
+    }
+    if(event.key === "ArrowDown") {
+        move(1, 0)
+    }
+    if(event.key === "ArrowLeft") {
+        move(0, -1)
+    }
+    if(event.key === "ArrowRight") {
+        move(0, 1)
+    }
 });
 
 youWonDiv.addEventListener("click", () => location.reload());
